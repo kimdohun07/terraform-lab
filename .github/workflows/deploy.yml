@@ -22,14 +22,24 @@ jobs:
         run: |
           scp -o StrictHostKeyChecking=no -i key.pem index.html ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST_1 }}:/tmp/index.html
           ssh -o StrictHostKeyChecking=no -i key.pem ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST_1 }} << 'EOF'
+            hostname
             sudo mv /tmp/index.html /usr/share/nginx/html/index.html
             sudo systemctl restart nginx
+            echo "=== tf-web2 file ==="
+            sudo cat /usr/share/nginx/html/index.html
+            echo "=== tf-web2 localhost ==="
+            curl -s localhost
           EOF
 
       - name: Copy index.html to do-public-web-2
         run: |
           scp -o StrictHostKeyChecking=no -i key.pem index.html ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST_2 }}:/tmp/index.html
           ssh -o StrictHostKeyChecking=no -i key.pem ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST_2 }} << 'EOF'
+            hostname
             sudo mv /tmp/index.html /usr/share/nginx/html/index.html
             sudo systemctl restart nginx
+            echo "=== do-public-web-2 file ==="
+            sudo cat /usr/share/nginx/html/index.html
+            echo "=== do-public-web-2 localhost ==="
+            curl -s localhost
           EOF
