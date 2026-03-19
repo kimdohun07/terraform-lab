@@ -58,6 +58,7 @@ resource "aws_instance" "web2" {
   subnet_id                   = data.aws_subnet.public_b.id
   vpc_security_group_ids      = [aws_security_group.web2_sg.id]
   associate_public_ip_address = true
+  key_name                    = "do-key"
   user_data_replace_on_change = true
 
   user_data = <<-EOF
@@ -65,7 +66,7 @@ resource "aws_instance" "web2" {
               dnf install nginx -y
               systemctl enable nginx
               systemctl start nginx
-              echo "<h1>Terraform Web2 GitHub</h1>" > /usr/share/nginx/html/index.html
+              echo "<h1>Terraform Web2</h1>" > /usr/share/nginx/html/index.html
               EOF
 
   tags = {
