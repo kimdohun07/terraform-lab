@@ -58,6 +58,7 @@ resource "aws_instance" "web2" {
   subnet_id                   = data.aws_subnet.public_b.id
   vpc_security_group_ids      = [aws_security_group.web2_sg.id]
   associate_public_ip_address = true
+  user_data_replace_on_change = true
 
   user_data = <<-EOF
               #!/bin/bash
