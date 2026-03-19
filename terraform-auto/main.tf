@@ -1,18 +1,51 @@
-provider "aws" {
-  region = "us-west-1"
-}
+name: Terraform Check
 
-data "aws_vpc" "default" {
-  default = true
-}
+on:
+  push:
+    branches:
+      - main
 
-data "aws_subnets" "default" {
-  filter {
-    name   = "vpc-id"
-    values = [data.aws_vpc.default.id]
-  }
-}
+jobs:
+  terraform-web2:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: terraform-web2
 
-data "aws_ssm_parameter" "ami" {
-  name = "/aws/service/ami-amazon-linux-latest/al2023-ami-kernel-default-x86_64"
-}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+
+      - name: Terraform Init
+        run: terraform init
+
+      - name: Terraform Validate
+        run: terraform validate
+
+      - name: Terraform Plan
+        run: terraform plan
+
+  terraform-alb:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: terraform-alb
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+
+      - name: Terraform Init
+        run: terraform init
+
+      - name: Terraform Validate
+        run: terraform validate
+
+      - name: Terraform Plan
+        run: terraform plan
