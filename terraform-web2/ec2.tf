@@ -64,7 +64,7 @@ resource "aws_instance" "web2" {
               dnf install nginx -y
               systemctl enable nginx
               systemctl start nginx
-              echo "<h1>Terraform Web2</h1>" > /usr/share/nginx/html/index.html
+              echo "<h1>Terraform Web2</h1><h1>GitHub</h1>" > /usr/share/nginx/html/index.html
               EOF
 
   tags = {
